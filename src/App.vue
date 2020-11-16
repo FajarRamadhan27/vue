@@ -1,15 +1,42 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="div" id="app">
+    {{ user.username }} - {{ fullName }}
+    <strong> follower: </strong> {{ follower }}
+    <button @click="followUser">
+      Follow
+    </button>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
+  data() {
+    return {
+      follower: 0,
+      user: {
+        id: 1,
+        username: '@Fr_Azhar27',
+        firtname: 'Fajar',
+        lastname: 'Ramadhan',
+        email: 'fajarramadhan220@gmail.com',
+        isAdmin: true,
+      }
+    }
+  },
+  computed: {
+    fullName() {
+      return `${this.user.firtname} ${this.user.lastname}`
+    }
+  },
+  methods: {
+    followUser() {
+      this.follower++;
+    }
+  },
+  mounted() {
+    this.followUser()
   }
 }
 </script>
@@ -19,8 +46,9 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
 }
 </style>
