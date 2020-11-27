@@ -10,6 +10,25 @@
         <div class="user-profile_follower-count">
             <strong>followers: </strong> {{ followers }}
         </div>
+
+        <form class="user-profile_create-tweet" @submit.prevent="createNewTweet"> 
+            <label for="new-tweet"> <strong> New Tweet </strong> </label>
+            <textarea id="newTweet" rows="4" v-model="newTweetContent"/>
+        
+            <div class="user-profile_create-tweet-type">
+                <label for="newTweetType"> <strong>Type: </strong></label>
+                <select id="newTweetType" v-model="selectedTweetType">
+                    <option :value="option.value" v-for="(option, index) in tweetTypes" :key="index">
+                        {{ option.name }}
+                    </option>
+                </select>
+            </div>
+
+            <button>
+                Tweet!
+            </button>
+        </form>
+
     </div>
 
     <div class="user-profile_tweet-wrapper">
@@ -31,6 +50,12 @@ import TweetItem from './TweetItem.vue';
         components: { TweetItem }, 
         data() {
             return {
+                newTweetContent: '',
+                selectedTweetType: 'instant',
+                tweetTypes: [
+                    { value: 'draft', name: 'Draft' },
+                    { value: 'instant', name: 'Instant Tweet'}
+                ],
                 followers: 0,
                 user: {
                     id: 1,
@@ -81,6 +106,16 @@ import TweetItem from './TweetItem.vue';
             },
             toggleFavorite(id) {
                 console.log(`favorite tweet #${id}`)
+            },
+            createNewTweet() {
+                if(this.newTweetContent && this.selectedTweetType != 'draft') {
+                    this.user.tweets.unshift({
+                        id: this.user.tweets.length + 1,
+                        content: this.newTweetContent,
+                    })
+
+                    this.newTweetContent ="";
+                }
             }
         },
 
@@ -124,5 +159,12 @@ h1 {
 .user-profile_tweet-wrapper {
     display: grid;
     grid-gap: 10px;
+}
+
+.user-profile_create-tweet {
+    border-top: 1px solid #DFE3E8;
+    display: flex;
+    padding-top: 20px;
+    flex-direction: column;
 }
 </style>
